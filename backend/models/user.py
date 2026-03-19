@@ -9,7 +9,7 @@ class UserCreate (BaseModel):
     email: EmailStr
     avatar_url: Optional[str] = None
 
-# o que enviamos de volta para o frontend (protegendo os dados sensíveis
+# o que a nossa API vai devolver quando alguém pedir os dados de um user
 class UserResponse (BaseModel):
     id:int
     username: str
@@ -18,3 +18,8 @@ class UserResponse (BaseModel):
 
     class Config:
         from_attributes = True
+
+class UserUpdate(BaseModel):
+    username: Optional[str] = None
+    email: Optional[EmailStr] = None
+    avatar_url: Optional[str] = None

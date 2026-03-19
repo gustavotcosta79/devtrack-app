@@ -9,3 +9,50 @@ GET http://127.0.0.1:8000/hello/User
 Accept: application/json
 
 ###
+### 1. Criar um Utilizador
+POST http://127.0.0.1:8000/users/
+Content-Type: application/json
+
+{
+  "github_id": 102030,
+  "username": "gustavocosta-dev",
+  "email": "gustavo@email.com",
+  "avatar_url": "https://github.com/avatar.png"
+}
+
+### 2. Criar um Repositório para o Utilizador (Repara no owner_id: 1)
+POST http://127.0.0.1:8000/repositories/
+Content-Type: application/json
+
+{
+  "github_repo_id": 998877,
+  "name": "primeiro-projeto",
+  "language": "Python",
+  "stars_count": 5,
+  "owner_id": 1,
+  "created_at": "2023-10-25T14:30:00Z"
+}
+
+### 3. Registar uma Atividade (O User 1 fez um commit no Repo 1)
+POST http://127.0.0.1:8000/activities/
+Content-Type: application/json
+
+{
+  "type": "PushEvent",
+  "repo_id": 1,
+  "user_id": 1,
+  "created_at": "2023-10-26T10:00:00Z"
+}
+
+### 4. Gravar o DevScore do Utilizador 1
+POST http://127.0.0.1:8000/devscore/
+Content-Type: application/json
+
+{
+  "user_id": 1,
+  "score": 85.5
+}
+
+### 5. (Opcional) Ver tudo o que o User 1 tem!
+GET http://127.0.0.1:8000/users/1/activities
+Accept: application/json

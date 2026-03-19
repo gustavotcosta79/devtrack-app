@@ -2,7 +2,7 @@ from sqlalchemy import create_engine, String, Float, DateTime, func, ForeignKey
 from sqlalchemy.orm import sessionmaker, DeclarativeBase, Mapped,mapped_column
 from datetime import datetime
 
-from backend.core.config import config
+from core.config import config
 
 engine = create_engine(config.database_url)
 
