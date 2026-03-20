@@ -56,3 +56,7 @@ Content-Type: application/json
 ### 5. (Opcional) Ver tudo o que o User 1 tem!
 GET http://127.0.0.1:8000/users/1/activities
 Accept: application/json
+
+### Importar um utilizador REAL do GitHub
+POST http://127.0.0.1:8000/users/import/torvalds
+Accept: application/json
