@@ -33,6 +33,7 @@ class Repository (Base):
     stars_count: Mapped[int] = mapped_column(default=0,index=True)
     owner_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    complexity: Mapped[str| None] = mapped_column(String,nullable=True)
 
 class GitHubActivity (Base):
     __tablename__ = "github_activity"

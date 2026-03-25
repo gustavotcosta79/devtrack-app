@@ -37,20 +37,20 @@ def import_user_from_github (github_username: str,db: Session = Depends(get_db))
 
     existing_user = user_service.get_by_github_id(github_data['id'])
     if existing_user:
-        raise HTTPException(status_code=400, detail="Este utilizador já está registado no DevTrack.")
-    
-    github_email = github_data.get("email")
-    if not github_email:
-        github_email = f"{github_data['login']}@users.noreply.github.com"
+        db_user = existing_user
+    else:
+        github_email = github_data.get("email")
+        if not github_email:
+            github_email = f"{github_data['login']}@users.noreply.github.com"
 
-    new_user = UserCreate (
-        github_id=github_data['id'],
-        username=github_data['login'],
-        email=github_email,
-        avatar_url=github_data.get("avatar_url")
-    )
+        new_user = UserCreate (
+            github_id=github_data['id'],
+            username=github_data['login'],
+            email=github_email,
+            avatar_url=github_data.get("avatar_url")
+        )
 
-    db_user = user_service.create_user(new_user)
+        db_user = user_service.create_user(new_user)
 
     # Sincronizar repositórios
     repos_data = github_service.get_user_repos(github_username)
@@ -58,11 +58,15 @@ def import_user_from_github (github_username: str,db: Session = Depends(get_db))
     for repo in repos_data:
         existing_repo = repo_service.get_by_github_repo_id(repo["id"])
 
+        repo_size = repo.get("size",0)
+        repo_complexity = repo_service.calculate_complexity(repo_size)
+
         if existing_repo:
             repo_update = RepositoryUpdate (
                 name=repo["name"],
                 language=repo.get("language"),
-                stars_count=repo.get("stargazers_count", 0)
+                stars_count=repo.get("stargazers_count", 0),
+                complexity = repo_complexity
             )
             repo_service.update(existing_repo.id,repo_update)
         else:
@@ -72,7 +76,9 @@ def import_user_from_github (github_username: str,db: Session = Depends(get_db))
                 language =  repo.get("language"),  # porque a linguagem pode ser nula
                 stars_count = repo.get ("stargazers_count"),
                 owner_id = db_user.id,
-                created_at = repo["created_at"]
+                created_at = repo["created_at"],
+                complexity = repo_complexity
+
             )
             repo_service.create(new_repo)
 
@@ -92,6 +98,12 @@ def import_user_from_github (github_username: str,db: Session = Depends(get_db))
                 created_at=event["created_at"]
             )
             activity_service.create(new_activity)
+
+    # CALCULAR O DEVSCORE
+    devscore_service = DevscoreService (db)
+    devscore_service.calculate_devscore_for_user(db_user.id)
+
+    db.refresh(db_user)
 
     return db_user
 

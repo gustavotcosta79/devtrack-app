@@ -1,7 +1,4 @@
-from http.client import responses
-
 import httpx
-from fastapi import HTTPException
 from core.config import config
 
 class GitHubService:

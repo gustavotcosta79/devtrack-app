@@ -10,6 +10,7 @@ class RepositoryCreate(BaseModel):
     stars_count: int = 0
     owner_id: int
     created_at: datetime
+    complexity: Optional[str] = None
 
 # o que a nossa API vai devolver quando alguém pedir os dados de um repositório
 class RepositoryResponse (BaseModel):
@@ -20,6 +21,8 @@ class RepositoryResponse (BaseModel):
     stars_count : int = 0
     owner_id : int
     created_at: datetime
+    complexity: Optional[str] = None
+
 
     class Config:
         from_attributes = True # usado para o Pydantic ler os dados do SQLAlchemy
@@ -28,3 +31,4 @@ class RepositoryUpdate(BaseModel):
     name: Optional[str] = None
     language: Optional[str] = None
     stars_count: Optional[int] = None
+    complexity: Optional[str] = None

@@ -20,7 +20,8 @@ class RepositoryService:
             language=repo.language,
             stars_count=repo.stars_count,
             owner_id=repo.owner_id,
-            created_at=repo.created_at
+            created_at=repo.created_at,
+            complexity=repo.complexity
         )
 
         self.db.add(db_repo)
@@ -47,6 +48,9 @@ class RepositoryService:
         if repo_update.stars_count is not None:
             db_repo.stars_count = repo_update.stars_count
 
+        if repo_update.complexity is not None:
+            db_repo.complexity = repo_update.complexity
+
         self.db.commit()
         self.db.refresh(db_repo)
         return db_repo
@@ -57,3 +61,12 @@ class RepositoryService:
             return True
         else:
             return False
+
+    def calculate_complexity(self,size_kb:int) -> str:
+
+        if size_kb < 1000:
+            return "Small"
+        elif size_kb <= 10000:
+            return "Medium"
+        else:
+            return "Large"
