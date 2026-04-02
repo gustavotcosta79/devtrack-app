@@ -1,5 +1,4 @@
 from collections import Counter
-
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from db.schema import User, DevScoreHistory

@@ -1,6 +1,7 @@
 from pydantic import BaseModel
-from typing import Dict,Any,List
+from typing import Dict,Any
 
+# o que a nossa API vai devolver
 class DashboardResponse (BaseModel):
     user_info : Dict[str,Any]
 
