@@ -11,6 +11,6 @@ class DashboardResponse (BaseModel):
 
     commits_per_month : Dict[str,int] # Ex: {"2023-10": 15, "2023-11": 42}
     devscore_evolution :Dict[str,float] # Ex: {"2023-10-25": 85.0, "2023-10-26": 92.5}
-    language_evolution : Dict[str,Dict[str,int]] # Ex: {"2023": {"Python": 2}, "2024": {"Python": 5, "C": 1}}
+    languages_evolution : Dict[str,Dict[str,int]] # Ex: {"2023": {"Python": 2}, "2024": {"Python": 5, "C": 1}}
     projects_over_time : Dict[str,int]
 
