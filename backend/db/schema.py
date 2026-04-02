@@ -4,7 +4,7 @@ from datetime import datetime
 
 from core.config import config
 
-engine = create_engine(config.database_url)
+engine = create_engine(config.database_url, pool_pre_ping=False)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine )
 
