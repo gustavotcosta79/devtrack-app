@@ -17,7 +17,8 @@ class UserResponse (BaseModel):
     avatar_url: Optional[str]
 
     class Config:
-        from_attributes = True
+        from_attributes = True # usado para o Pydantic ler os dados do SQLAlchemy
+
 
 class UserUpdate(BaseModel):
     username: Optional[str] = None
