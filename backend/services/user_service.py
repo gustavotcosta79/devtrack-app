@@ -123,7 +123,7 @@ class UserService:
         github_data = github_service.get_user_profile(github_username)
 
         if not github_data:
-            raise HTTPException(status_code=404, detail="Este username não existe no GitHub!")
+            raise HTTPException(status_code=404, detail="Username does not exist on GitHub!")
 
         existing_user = self.get_by_github_id(github_data['id'])
         if existing_user:
