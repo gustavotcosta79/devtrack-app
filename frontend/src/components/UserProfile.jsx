@@ -16,7 +16,7 @@ const UserProfile = ({userInfo, devScore, onRefresh,isRefreshing}) => {
             </h2>
 
             <div>
-                <p className="text-gray-400 mt-1 ">Synchronize user data</p>
+                <p className="text-gray-400 mt-1 ">{isRefreshing ? 'Synchronizing user data' : 'Synchronize user data'}</p>
                 <button className="bg-green-950 px-5 border-4 rounded-full w-20 h-full border-0.5 border-accent hover:cursor-pointer mt-2 transition-colors"
                 onClick={() => onRefresh()}>
                     <LucideRefreshCw size={30} className={isRefreshing ? "animate-spin text-accent": ""} />
