@@ -1,7 +1,5 @@
-Aqui tens o conteúdo formatado em Markdown profissional, pronto para copiar e colar no teu ficheiro README.md.
-Adicionei ícones, estrutura de tópicos e blocos de código para tornar a leitura mais dinâmica e organizada.
-
-# 🚀 DevTrack### Developer Activity Analytics & AI Recommendations Platform
+# 🚀 DevTrack
+### Developer Activity Analytics & AI Recommendations Platform
 **DevTrack** is a full-stack platform. It goes beyond basic versioning statistics. It integrates with the GitHub API. The system collects, analyzes, and evaluates developer activity. It calculates a custom **DevScore**. It also classifies repository complexity.
 
 The goal is to provide a clear view of technical evolution. It also generates targeted learning recommendations using Artificial Intelligence.
