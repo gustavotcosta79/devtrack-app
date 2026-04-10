@@ -6,30 +6,33 @@ The goal is to provide a clear view of technical evolution. It also generates ta
 ---
 ## ✨ Main Features
 ### ✅ Implemented
-*   **Automatic Data Pipeline:** Native integration with the GitHub API for extracting repositories, commits, languages, and time history.
-*   **DevScore Engine:** A mathematical calculation algorithm. It evaluates consistency, technological diversity, and activity level. It assigns a seniority level (*Junior, Full, Senior*).
-*   **Interactive Dashboard:** A rich and responsive interface. It has smooth temporal graphs (language evolution, commits per month, score history).
-*   **Complexity Analysis:** Automatic evaluation and categorization of the complexity of each repository (*Small, Medium, Large*) based on backend metrics.
+* **Automatic Data Pipeline:** Native integration with the GitHub API for extracting repositories, commits, languages, and time history.
+* **DevScore Engine:** A mathematical calculation algorithm. It evaluates consistency, technological diversity, and activity level. It assigns a seniority level (*Junior, Full, Senior*).
+* **Interactive Dashboard:** A rich and responsive interface. It has smooth temporal graphs (language evolution, commits per month, score history).
+* **Complexity Analysis:** Automatic evaluation and categorization of the complexity of each repository (*Small, Medium, Large*) based on backend metrics.
+
 ### 🗺️ Roadmap (To Implement)
-*   **AI Recommendations:** Integration with LLMs. This generates study advice and customized stack diversification.
-*   **Secure Authentication:** Login via GitHub OAuth 2.0.
-*   **Infrastructure and Deploy:** Complete Dockerization of the stack and deploy on a Cloud platform.
+* **AI Recommendations:** Integration with LLMs (Groq). This generates study advice and customized stack diversification.
+* **Secure Authentication:** Login via GitHub OAuth 2.0.
+* **Continuous Integration / Continuous Deployment (CI/CD):** Automated testing and build pipelines using GitHub Actions.
+* **Infrastructure and Deploy:** Complete Dockerization of the full stack (Frontend, Backend, DB) and automated cloud deployment (e.g., Render, Vercel).
 
 ---
 ## 🛠️ Tech Stack
 
 | Layer      | Technologies                                       |
 | :--------- | :------------------------------------------------- |
-| **Frontend** | React, Vite, Tailwind CSS, Recharts, Lucide React |
-| **Backend**  | Python, FastAPI, SQLAlchemy                        |
+| **Frontend** | React, Vite, Tailwind CSS, Recharts, Lucide React  |
+| **Backend** | Python, FastAPI, SQLAlchemy                        |
 | **Database** | PostgreSQL                                         |
-| **Services** | GitHub REST API (Coming soon: OpenAI/Gemini API)   |
+| **DevOps** | Docker, GitHub Actions                             |
+| **Services** | GitHub REST API (Coming soon: Groq Llama 3 API)    |
+
 ---
 ## 🚀 How to Run the Project (Example)
-```
-bash
+```bash
 # Clone the repository
-git clone https://github.com
+git clone [https://github.com/YourUsername/DevTrack.git](https://github.com/YourUsername/DevTrack.git)
 
 # Install Backend dependencies
 cd backend
@@ -39,7 +42,6 @@ pip install -r requirements.txt
 cd ../frontend
 npm install
 npm run dev
-```
 ------------------------------
 💡 This project is under continuous development as part of a technical portfolio.
 
