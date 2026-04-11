@@ -1,4 +1,12 @@
-backend/venv/
+# Ambientes Virtuais
+.venv/
+backend/.venv/
+venv/
+
+# Caches e Configurações
 .idea/
 __pycache__/
+*.pyc
+
+# Segurança
 .env
