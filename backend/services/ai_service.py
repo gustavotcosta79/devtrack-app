@@ -9,15 +9,19 @@ class AIService:
         prompt_messages = [
             {
                 "role": "system",
-                "content": "És um Mentor técnico Sénior. Responde em português de Portugal. Dá "
-                           "Uma recomendação curta (máximo 3 ou 4 linhas) e direta sobre o que o "
-                           "programador deve aprender a seguir. Não uses formatação markdown pesada, "
-                           "apenas texto simples."
+                "content": ("És um Tech Lead e Mentor de Carreira exigente mas encorajador. "
+                            "O teu objetivo é analisar as métricas de um programador e dar UMA recomendação técnica incisiva e acionável. "
+                            "Responde em português de Portugal. Máximo de 3 frases. "
+                            "Estrutura a resposta assim: 1) Um breve elogio ou constatação sobre o nível e stack atual. "
+                            "2) O passo técnico óbvio seguinte para ele evoluir (ex: sugerir um padrão de desenho, aprender CI/CD, testes automáticos, arquitetura, ou uma linguagem complementar). "
+                            "Não uses formatação markdown (sem asteriscos ou bold).")
             },
             {
                 "role": "user",
-                "content": f"Analisa este perfil: DevScore de {dev_score}. Trabalha principalmente com as linguagens "
-                           f"{top_languages}. Os seus repositórios são de complexidade: {complexity_level}."
+                "content": (f"Avalia este programador. O seu nível global é um DevScore de {dev_score} (numa escala onde 0-39 é Júnior, 40-79 é Pleno e 80-100 é Sénior). "
+                            f"Ele programa essencialmente em: {top_languages}. "
+                            f"O tamanho/complexidade típica dos seus repositórios é: {complexity_level}. "
+                            "O que é que ele deve aprender ou começar a fazer nos seus projetos a seguir para subir de nível?")
             }
         ]
 
@@ -28,4 +32,4 @@ class AIService:
         )
 
         text_from_ai = response.choices[0].message.content
-        return {"response" : text_from_ai}
+        return text_from_ai
