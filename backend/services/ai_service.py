@@ -23,7 +23,7 @@ class AIService:
 
         response = self.client.chat.completions.create(
             messages = prompt_messages,
-            model="llama3-8b-8192",
+            model="llama-3.1-8b-instant",
             temperature=0.7
         )
 
