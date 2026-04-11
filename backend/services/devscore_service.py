@@ -10,7 +10,7 @@ class DevscoreService:
         self.db = db
 
     def get_devscore_by_user_id (self,user_id:int):
-        return self.db.query(DevScoreHistory).filter(DevScoreHistory.user_id == user_id).first()
+        return self.db.query(DevScoreHistory).filter(DevScoreHistory.user_id == user_id).order_by(DevScoreHistory.calculated_at.desc()).first()
 
     def get_devscore_by_id(self, id: int):
         return self.db.query(DevScoreHistory).filter(DevScoreHistory.id == id).first()
