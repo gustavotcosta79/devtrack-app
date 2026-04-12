@@ -1,4 +1,7 @@
 # 🚀 DevTrack
+
+💡 This project is STILL under continuous development as part of a technical portfolio.
+
 ### Developer Activity Analytics & AI Recommendations Platform
 **DevTrack** is a full-stack platform. It goes beyond basic versioning statistics. It integrates with the GitHub API. The system collects, analyzes, and evaluates developer activity. It calculates a custom **DevScore**. It also classifies repository complexity.
 
@@ -43,6 +46,7 @@ cd ../frontend
 npm install
 npm run dev
 ------------------------------
-💡 This project is under continuous development as part of a technical portfolio.
+
+💡 This project is STILL under continuous development as part of a technical portfolio.
 
 
