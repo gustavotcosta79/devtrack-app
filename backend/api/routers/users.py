@@ -34,9 +34,6 @@ def import_user_from_github (github_username: str,db: Session = Depends(get_db))
 @router.get("/github/{github_id}", response_model= UserResponse)
 def get_user_by_github_id (github_id : int, db: Session = Depends(get_db),current_user: User = Depends(get_current_user)):
 
-    if current_user.github_id != github_id:
-        raise HTTPException(status_code=403, detail="Permission refused.")
-
     service = UserService(db)
 
     db_user = service.get_by_github_id(github_id)
@@ -46,9 +43,6 @@ def get_user_by_github_id (github_id : int, db: Session = Depends(get_db),curren
 
 @router.get("/{user_id}", response_model=UserResponse)
 def get_user (user_id : int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-
-    if current_user.id != user_id:
-        raise HTTPException(status_code=403, detail="Permission refused.")
 
     service = UserService(db)
 
@@ -60,9 +54,6 @@ def get_user (user_id : int, db: Session = Depends(get_db), current_user: User =
 @router.get("/{user_id}/repositories", response_model=List[RepositoryResponse])
 def get_all_user_repositories(user_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
 
-    if current_user.id != user_id:
-        raise HTTPException(status_code=403, detail="Permission refused.")
-
     service = RepositoryService(db)
 
     db_repository = service.get_all_repository_by_owner(user_id)
@@ -70,9 +61,6 @@ def get_all_user_repositories(user_id: int, db: Session = Depends(get_db), curre
 
 @router.get("/{user_id}/activities", response_model=List[ActivityResponse])
 def get_all_activity_by_user_id (user_id:int, db: Session = Depends(get_db),current_user: User = Depends(get_current_user)):
-
-    if current_user.id != user_id:
-        raise HTTPException(status_code=403, detail="Permission refused.")
 
     service = ActivityService(db)
 
@@ -84,9 +72,6 @@ def get_all_activity_by_user_id (user_id:int, db: Session = Depends(get_db),curr
 @router.get("/{user_id}/devscore", response_model=DevScoreResponse)
 def get_devscore_by_user_id (user_id:int, db: Session = Depends(get_db),current_user: User = Depends(get_current_user)):
 
-    if current_user.id != user_id:
-        raise HTTPException(status_code=403, detail="Permission refused.")
-
     service = DevscoreService(db)
 
     db_devscore = service.get_devscore_by_user_id(user_id)
@@ -97,9 +82,6 @@ def get_devscore_by_user_id (user_id:int, db: Session = Depends(get_db),current_
 
 @router.get("/{user_id}/dashboard", response_model=DashboardResponse)
 def get_dashboard_data(user_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-
-    if current_user.id != user_id:
-        raise HTTPException(status_code=403, detail="Permission refused.")
 
     service = UserService(db)
 
