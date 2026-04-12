@@ -9,6 +9,8 @@ import ScoreEvolutionChart from "./components/charts/ScoreEvolutionChart.jsx";
 import CommitsChart from "./components/charts/CommitsChart.jsx";
 import FavoriteLanguagesChart from "./components/charts/FavoriteLanguagesChart.jsx";
 import ProjectsEvolutionChart from "./components/charts/ProjectsEvolutionChart.jsx";
+import RepoList from "./components/RepoList.jsx";
+import AiRecommendation from "./components/AiRecommendation.jsx";
 
 const API_BASE_URL = 'http://127.0.0.1:8000';
 
@@ -17,8 +19,13 @@ const App = () =>{
     const [searchTerm, setSearchTerm] = useState('');
 
     const [userData, setUserData] = useState(null);
+    const [userRepos, setUserRepos] = useState([])
+    
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+
+    const [aiRecommendation, setAiRecommendation] = useState(null);
+    const [isAiLoading, setIsAiLoading] = useState(false);
 
     const handleSearch = async (username, isRefresh = false) => {
 
@@ -60,16 +67,74 @@ const App = () =>{
                 const dashboardData = await dashboardResponse.json();
 
                 setUserData(dashboardData);
+                console.log("UserDATA!", userData)
+
+                const reposData = await fetchUserRepositories(basicUser.id);
+                setUserRepos(reposData)
+
+                // sem await que é para o dashboard carregar sem  a recomendação da ai (porque normalmente a recomendação demora mais tempo
+                // que o dashboard), desta maneira o dashboard carrega logo e a recomendação do LLM fica a carregar de fundo
+                fetchAiRecommendation(basicUser.id);
 
             }catch (error){
                 console.error(`Error importing the user: ${error}`);
                 setError(error.message);
             }
             finally {
-                setIsLoading(false)
+                setIsLoading(false);
             }
 
     }
+
+    const fetchUserRepositories = async (userId) => {
+        const reposEndpoint = `${API_BASE_URL}/users/${userId}/repositories`;
+
+        const reposResponse = await fetch(reposEndpoint,{
+            method: 'GET',
+            headers:{
+                accept: 'application/json'
+            }
+        });
+
+        if (!reposResponse.ok){
+            throw new Error('Error Loading the User repositories')
+        }
+
+        const reposData = await reposResponse.json();
+
+        console.log("Dados dos repositorios de um utilizador: ",reposData);
+        return reposData;
+
+    }
+
+    const fetchAiRecommendation = async (userId) => {
+
+        setIsAiLoading(true);
+        try {
+            const aiRecommendationEndpoint = `${API_BASE_URL}/users/${userId}/recommendation`;
+
+            const aiRecommendationResponse = await fetch(aiRecommendationEndpoint, {
+                method: 'GET',
+                headers:{
+                    accept: 'application/json'
+                }
+            });
+
+            const aiRecommendationData = await aiRecommendationResponse.json()
+
+            console.log("Resposta da AI (recomendação): ", aiRecommendationData)
+            setAiRecommendation(aiRecommendationData)
+        }
+        catch (error){
+            console.error("Erro no LLM: ", error)
+            setAiRecommendation("AI Recommendation unavailable at this moment")
+        }finally {
+            setIsAiLoading(false)
+        }
+    }
+
+
+
 
     return (
         <div className="min-h-screen bg-primary text-white font-sans selection:bg-accent selection:text-white">
@@ -95,8 +160,7 @@ const App = () =>{
                                    onRefresh={()=>handleSearch(userData.user_info.username,true)}
                                    isRefreshing={isLoading}
                                />
-
-                               {/* A Grelha de Estatísticas (4 colunas no Desktop, 1 no Mobile) */}                               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10 w-full text-left">
+                               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10 w-full text-left">
                                <StatCard
                                    title="Total Repositories"
                                    value={userData.total_repos}
@@ -119,7 +183,13 @@ const App = () =>{
                                    value={userData.current_devscore >= 80 ? "Sénior" : userData.current_devscore >= 40 ? "Pleno" : "Júnior"}
                                    icon={Trophy}
                                />
-                           </div>
+                               </div>
+
+
+                               <AiRecommendation recommendation={aiRecommendation} isLoading={isAiLoading}/>
+
+
+
                                <div className="grid gap-6 md:grid-cols-2 grid-cols-1">
                                    <ChartCard title={"DevScore Evolution"}>
                                        <ScoreEvolutionChart data={userData.devscore_evolution}/>
@@ -135,16 +205,22 @@ const App = () =>{
 
                                    </ChartCard>
                                </div>
+                               {userRepos && (
+                                   <RepoList repos={userRepos} username={userData.user_info.username} />
+                               )}
                            </div>
                        ) : error ? (
                            <p className="text-red-500 font-bold ">
                                {error}
                            </p>
                        ) : isLoading ? (
-                           <p className="text-accent animate-pulse items-center">
-                               Importing Repositories and calculating DevScore...
+                           <div>
+                               <p className="text-accent animate-pulse items-center">
+                                   Importing Repositories and calculating DevScore...
+                               </p>
                                <Spinner/>
-                           </p>
+                           </div>
+
                        ) : null}
                    </div>
                </main>
