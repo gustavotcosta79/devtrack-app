@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from api.routers import users, repositories, activities, devscore
+from api.routers import users, repositories, activities, devscore, auth
 from db.schema import engine, Base
 from fastapi.middleware.cors import CORSMiddleware # 1. Importa o CORS
 
@@ -20,6 +20,7 @@ app.include_router(users.router)
 app.include_router(repositories.router)
 app.include_router(activities.router)
 app.include_router(devscore.router)
+app.include_router(auth.router)
 @app.get("/")
 async def root():
     return {"message": "DevTrack API online"}

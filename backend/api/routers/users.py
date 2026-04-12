@@ -1,18 +1,19 @@
 from typing import List
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
-from api.deps import get_db
+from api.deps import get_db, get_current_user
+from db.schema import User
 from models.activity import ActivityResponse
 from models.devscore import DevScoreResponse
 from models.repository import RepositoryResponse
 from models.user import UserResponse, UserCreate, UserUpdate
-from services import ai_service
 from services.activity_service import ActivityService
 from services.ai_service import AIService
 from services.devscore_service import DevscoreService
 from services.repository_service import RepositoryService
 from services.user_service import UserService
 from models.dashboard import DashboardResponse
+
 router = APIRouter(prefix="/users", tags=["Users"])
 
 @router.post("/", response_model=UserResponse)
@@ -31,7 +32,11 @@ def import_user_from_github (github_username: str,db: Session = Depends(get_db))
     return service.sync_user_from_github(github_username)
 
 @router.get("/github/{github_id}", response_model= UserResponse)
-def get_user_by_github_id (github_id : int, db: Session = Depends(get_db)):
+def get_user_by_github_id (github_id : int, db: Session = Depends(get_db),current_user: User = Depends(get_current_user)):
+
+    if current_user.github_id != github_id:
+        raise HTTPException(status_code=403, detail="Permission refused.")
+
     service = UserService(db)
 
     db_user = service.get_by_github_id(github_id)
@@ -40,7 +45,11 @@ def get_user_by_github_id (github_id : int, db: Session = Depends(get_db)):
     return db_user
 
 @router.get("/{user_id}", response_model=UserResponse)
-def get_user (user_id : int, db: Session = Depends(get_db)):
+def get_user (user_id : int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+
+    if current_user.id != user_id:
+        raise HTTPException(status_code=403, detail="Permission refused.")
+
     service = UserService(db)
 
     db_user = service.get_by_user_id(user_id)
@@ -49,14 +58,22 @@ def get_user (user_id : int, db: Session = Depends(get_db)):
     return db_user
 
 @router.get("/{user_id}/repositories", response_model=List[RepositoryResponse])
-def get_all_user_repositories(user_id: int, db: Session = Depends(get_db)):
+def get_all_user_repositories(user_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+
+    if current_user.id != user_id:
+        raise HTTPException(status_code=403, detail="Permission refused.")
+
     service = RepositoryService(db)
 
     db_repository = service.get_all_repository_by_owner(user_id)
     return db_repository
 
 @router.get("/{user_id}/activities", response_model=List[ActivityResponse])
-def get_all_activity_by_user_id (user_id:int, db: Session = Depends(get_db)):
+def get_all_activity_by_user_id (user_id:int, db: Session = Depends(get_db),current_user: User = Depends(get_current_user)):
+
+    if current_user.id != user_id:
+        raise HTTPException(status_code=403, detail="Permission refused.")
+
     service = ActivityService(db)
 
     db_activity = service.get_all_activity_by_user_id(user_id)
@@ -65,7 +82,11 @@ def get_all_activity_by_user_id (user_id:int, db: Session = Depends(get_db)):
     return db_activity
 
 @router.get("/{user_id}/devscore", response_model=DevScoreResponse)
-def get_devscore_by_user_id (user_id:int, db: Session = Depends(get_db)):
+def get_devscore_by_user_id (user_id:int, db: Session = Depends(get_db),current_user: User = Depends(get_current_user)):
+
+    if current_user.id != user_id:
+        raise HTTPException(status_code=403, detail="Permission refused.")
+
     service = DevscoreService(db)
 
     db_devscore = service.get_devscore_by_user_id(user_id)
@@ -75,7 +96,11 @@ def get_devscore_by_user_id (user_id:int, db: Session = Depends(get_db)):
 
 
 @router.get("/{user_id}/dashboard", response_model=DashboardResponse)
-def get_dashboard_data(user_id: int, db: Session = Depends(get_db)):
+def get_dashboard_data(user_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+
+    if current_user.id != user_id:
+        raise HTTPException(status_code=403, detail="Permission refused.")
+
     service = UserService(db)
 
     dashboard_data = service.get_user_dashboard(user_id)
@@ -85,7 +110,11 @@ def get_dashboard_data(user_id: int, db: Session = Depends(get_db)):
     return dashboard_data
 
 @router.put("/{user_id}",response_model=UserResponse)
-def update_user (user_id:int, user_update: UserUpdate, db: Session = Depends(get_db)):
+def update_user (user_id:int, user_update: UserUpdate, db: Session = Depends(get_db),current_user: User = Depends(get_current_user)):
+
+    if current_user.id != user_id:
+        raise HTTPException(status_code=403, detail="Permission refused.")
+
     service = UserService(db)
 
     db_user = service.update(user_id,user_update)
@@ -94,7 +123,11 @@ def update_user (user_id:int, user_update: UserUpdate, db: Session = Depends(get
     return db_user
 
 @router.delete("/{user_id}")
-def delete_user (user_id: int, db: Session = Depends(get_db)):
+def delete_user (user_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+
+    if current_user.id != user_id:
+        raise HTTPException(status_code=403, detail="Permission refused.")
+
     service = UserService(db)
 
     if service.delete(user_id):
@@ -103,7 +136,11 @@ def delete_user (user_id: int, db: Session = Depends(get_db)):
     raise HTTPException(status_code=404, detail="User not found.")
 
 @router.get("/{user_id}/recommendation")
-def generate_recommendation (user_id:int, db: Session = Depends(get_db)):
+def generate_recommendation (user_id:int, db: Session = Depends(get_db),current_user: User = Depends(get_current_user)):
+
+    if current_user.id != user_id:
+        raise HTTPException(status_code=403, detail="Permission refused.")
+
     devscore_service = DevscoreService(db)
     repository_service = RepositoryService(db)
     service_ai = AIService ()
