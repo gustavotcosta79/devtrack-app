@@ -1,4 +1,3 @@
-import httpx
 from fastapi import APIRouter
 from fastapi.params import Depends
 from sqlalchemy.orm import Session
@@ -7,7 +6,7 @@ from api.deps import get_db
 from core.config import config
 from services.auth_service import AuthService
 
-router = APIRouter(prefix="/auth", tags=["users"])
+router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 @router.get("/github/login")
 def github_login ():

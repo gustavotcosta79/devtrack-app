@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta, timezone
 import httpx
 import jwt
 from sqlalchemy.orm import Session
@@ -34,9 +35,11 @@ class AuthService :
         if not user:
             user = user_service.sync_user_from_github(github_user["login"])
 
+        expire = datetime.now(timezone.utc) + timedelta (hours=24)
+
         token_jwt = jwt.encode(
-            {"sub": str(user.id)},  # "sub" significa "subject" (o sujeito deste token)
-            config.jwt_secret_key,
+            {"sub": str(user.id),"exp" : expire},  # "sub" significa "subject" (o sujeito deste token), # token expira passado 24h
+            config.jwt_secret_key, # a parte da signature no token jwt
             algorithm="HS256"
         )
 

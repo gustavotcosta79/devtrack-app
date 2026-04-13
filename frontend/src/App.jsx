@@ -51,6 +51,7 @@ const App = () =>{
                 }
 
                 const basicUser = await syncResponse.json();
+                console.log("Basic User:" ,basicUser)
 
                 const dashboardEndpoint = `${API_BASE_URL}/users/${basicUser.id}/dashboard`
                 const dashboardResponse = await fetch(dashboardEndpoint,{

@@ -12,7 +12,9 @@ const UserProfile = ({userInfo, devScore, onRefresh,isRefreshing}) => {
                 className="w-24 h-24 rounded-full border-4 border-accent shadow-[0_0_15px_rgba(16,185,129,0.3)] object-cover"
             />
             <h2 className="text-left text-4xl text-white">
-                @{userInfo.username}
+                    <a href={`https://github.com/${userInfo.username}`} target="_blank" rel="noreferrer" className="font-bold text-white hover:text-accent transition-colors cursor-pointer">
+                        @{userInfo.username}
+                    </a>
             </h2>
 
             <div>
