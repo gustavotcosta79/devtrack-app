@@ -41,6 +41,9 @@ def get_user_by_github_id (github_id : int, db: Session = Depends(get_db),curren
         raise HTTPException(status_code=404, detail="User not found.")
     return db_user
 
+@router.get("/me",response_model=UserResponse)
+def get_current_user_info (current_user : User = Depends(get_current_user)):
+    return current_user
 @router.get("/{user_id}", response_model=UserResponse)
 def get_user (user_id : int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
 
@@ -120,9 +123,6 @@ def delete_user (user_id: int, db: Session = Depends(get_db), current_user: User
 @router.get("/{user_id}/recommendation")
 def generate_recommendation (user_id:int, db: Session = Depends(get_db),current_user: User = Depends(get_current_user)):
 
-    if current_user.id != user_id:
-        raise HTTPException(status_code=403, detail="Permission refused.")
-
     devscore_service = DevscoreService(db)
     repository_service = RepositoryService(db)
     service_ai = AIService ()
@@ -156,3 +156,4 @@ def generate_recommendation (user_id:int, db: Session = Depends(get_db),current_
     recommendation_text = service_ai.generate_recommendation(user_devscore,languages_string,most_common_complexity)
 
     return recommendation_text
+
