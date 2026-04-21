@@ -1,5 +1,5 @@
-# usa a "image" oficial do Python, com o python 3.14 como a base da "image"
-FROM python:3.14
+# usa a "image" oficial do Python, com o python 3.12 como a base da "image"
+FROM python:3.12-slim
 
 # definir a pasta de trabalho dentro do container
 WORKDIR /app
