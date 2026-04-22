@@ -1,3 +1,4 @@
+import os
 from fastapi import APIRouter
 from fastapi.params import Depends
 from sqlalchemy.orm import Session
@@ -18,5 +19,6 @@ def github_callback (code:str, db: Session =  Depends(get_db)):
     auth_service = AuthService(db)
 
     token_jwt = auth_service.process_github_login(code)
+    frontend_url = os.getenv("FRONTEND_URL", "http://localhost:5173")
 
-    return RedirectResponse(url=f"http://localhost:5173/dashboard?token={token_jwt}")
+    return RedirectResponse(url=f"{frontend_url}/dashboard?token={token_jwt}")
