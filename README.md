@@ -12,13 +12,17 @@ The goal is to provide a clear view of technical evolution. It also generates ta
 * **Automatic Data Pipeline:** Native integration with the GitHub API for extracting repositories, commits, languages, and time history.
 * **DevScore Engine:** A mathematical calculation algorithm. It evaluates consistency, technological diversity, and activity level. It assigns a seniority level (*Junior, Full, Senior*).
 * **Interactive Dashboard:** A rich and responsive interface. It has smooth temporal graphs (language evolution, commits per month, score history).
-* **Complexity Analysis:** Automatic evaluation and categorization of the complexity of each repository (*Small, Medium, Large*) based on backend metrics.
-
-### 🗺️ Roadmap (To Implement)
-* **AI Recommendations:** Integration with LLMs (Groq). This generates study advice and customized stack diversification.
+* **Complexity Analysis:** Automatic evaluation and categorization of the complexity of each repository (*Small, Medium, Large*) based on backend metrics.* 
+**AI Recommendations:** Integration with LLMs (Groq). This generates study advice and customized stack diversification. 
 * **Secure Authentication:** Login via GitHub OAuth 2.0.
 * **Continuous Integration / Continuous Deployment (CI/CD):** Automated testing and build pipelines using GitHub Actions.
 * **Infrastructure and Deploy:** Complete Dockerization of the full stack (Frontend, Backend, DB) and automated cloud deployment (e.g., Render, Vercel).
+
+### 🗺️ Roadmap (To Implement)
+* **Improve UX:** Using the CRUD operations (like edit personal information, delete repositories, etc)
+* **Documentation/Demo:** Elaborate documentation (like a report) of the choices/decisions made in the progress of the project. Record a demo on the application.
+* **UPDATE READ.ME**
+* **Search improvements:** Search improvements and new functionalities for the app
 
 ---
 ## 🛠️ Tech Stack
