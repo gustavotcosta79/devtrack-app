@@ -15,6 +15,7 @@ import {Routes} from "react-router-dom";
 import {Route} from "react-router-dom";
 import {useSearchParams} from "react-router-dom";
 import {useNavigate, useLocation} from "react-router-dom";
+import Navbar from "./components/Navbar.jsx";
 
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
@@ -147,17 +148,13 @@ const App = () =>{
                 navigate("/",{replace : true})
             }
 
-
-
         } catch (error){
             console.log ("Erro no fetch do current user: ", error)
         }
         finally {
             setIsLoading(false);
         }
-
     }
-
 
     const fetchUserRepositories = async (userId) => {
         const reposEndpoint = `${API_BASE_URL}/users/${userId}/repositories`;
@@ -227,16 +224,8 @@ const App = () =>{
             <div className="max-w-5xl mx-auto px-6 py-10">
 
                 <header className="flex items-center justify-between mb-12">
-                    <h1 className="text-2xl font-bold tracking-wider cursor-pointer" onClick={()=>navigate("/")}>
-                        <span className="text-accent">{'{'}</span> DevTrack <span className="text-accent">{'}'}</span>
-                    </h1>
-                    {localStorage.getItem("token") ? (
-                        <button onClick={() => handleLogout()} className="inline-flex items-center justify-center gap-3 rounded-2xl bg-red-700 px-8 py-4 text-white font-bold border-2 border-transparent hover:bg-red-400 hover:border-red-500 hover:scale-105 transition-all cursor-pointer shadow-lg">
-                            Logout
-                        </button> ) : null
-                    }
+                    <Navbar handleLogout={() =>handleLogout()} navigate={navigate} userData={userData}/>
                 </header>
-
 
                 <main>
                     <Routes>
