@@ -16,6 +16,7 @@ import {Route} from "react-router-dom";
 import {useSearchParams} from "react-router-dom";
 import {useNavigate, useLocation} from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
+import RepositoriesPage from "./components/RepositoriesPage.jsx";
 
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
@@ -36,6 +37,9 @@ const App = () =>{
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const location = useLocation();
+
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
+
 
     useEffect(() => {
         if (location.pathname === "/dashboard") {
@@ -218,13 +222,34 @@ const App = () =>{
 
     }
 
+    const deleteRepository = async (repoId) => {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        const deleteReposEndpoint = `${API_BASE_URL}/repositories/${repoId}`;
+
+        const deleteReponse = await fetch (deleteReposEndpoint, {
+            method: 'DELETE',
+            headers:{
+                accept:'application/json',
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        if (!deleteReponse.ok){
+            throw new Error ('Error Deleting the Repository')
+        }
+
+        setUserRepos(userRepos.filter((repo) => repo.id !== repoId))
+    }
+
 
     return (
         <div className="min-h-screen bg-primary text-white font-sans selection:bg-accent selection:text-white">
             <div className="max-w-5xl mx-auto px-6 py-10">
 
                 <header className="flex items-center justify-between mb-12">
-                    <Navbar handleLogout={() =>handleLogout()} navigate={navigate} userData={userData}/>
+                    <Navbar handleLogout={() =>handleLogout()} navigate={navigate} userData={userData} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen}/>
                 </header>
 
                 <main>
@@ -234,7 +259,8 @@ const App = () =>{
                             <div className="mt-10 text-center items-center">
                                 {localStorage.getItem("token") ? (
                                     <div>
-                                        <button onClick={() =>navigate("/dashboard")} className="inline-flex items-center justify-center gap-3 rounded-2xl bg-[#24292e] px-8 py-4 text-white font-bold border-2 border-transparent hover:bg-gray-700 hover:border-gray-500 hover:scale-105 transition-all cursor-pointer shadow-lg">
+                                        <button onClick={() => {navigate("/dashboard"); setIsMenuOpen(false)}}
+                                                className="inline-flex items-center justify-center gap-3 rounded-2xl bg-[#24292e] px-8 py-4 text-white font-bold border-2 border-transparent hover:bg-gray-700 hover:border-gray-500 hover:scale-105 transition-all cursor-pointer shadow-lg">
                                             Go to dashboard
                                         </button>
                                     </div>
@@ -337,6 +363,10 @@ const App = () =>{
                                     </p>
                                 )}
                             </div>
+                        }/>
+
+                        <Route path="/repositories" element={
+                            <RepositoriesPage repos={userRepos} username={userData?.user_info?.username} onDeleteRepo={deleteRepository}/>
                         }/>
                     </Routes>
                </main>

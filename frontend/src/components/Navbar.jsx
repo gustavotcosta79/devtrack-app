@@ -2,16 +2,14 @@ import React, {Fragment, useState} from 'react'
 
 
 
-const Navbar = ({handleLogout, navigate, userData}) => {
-
-    const [isMenuOpen, setIsMenuOpen] = useState(false)
+const Navbar = ({handleLogout, navigate, userData, setIsMenuOpen, isMenuOpen}) => {
 
     return (
         <Fragment>
-            <h1 className="text-2xl font-bold tracking-wider cursor-pointer" onClick={()=>navigate("/")}>
+            <h1 className="text-2xl font-bold tracking-wider cursor-pointer" onClick={() => {navigate("/"); setIsMenuOpen(false)}}>
                 <span className="text-accent">{'{'}</span> DevTrack <span className="text-accent">{'}'}</span>
             </h1>
-            <div className="relative flex-col items-center">
+            <div className="relative flex-col items-center" >
                 {userData ? (
                         <img
                             src={userData.user_info.avatar_url}
@@ -28,7 +26,11 @@ const Navbar = ({handleLogout, navigate, userData}) => {
                         <button className="w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors cursor-pointer">
                             My profile
                         </button>
-                        <button onClick={() => handleLogout()}
+                        <button onClick={() => {navigate("/repositories"); setIsMenuOpen(false)}}
+                            className="w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors cursor-pointer">
+                            My Repositories
+                        </button>
+                        <button onClick={() => {handleLogout(); setIsMenuOpen(false)}}
                                 className="w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-gray-800 transition-colors font-bold cursor-pointer">
                             Logout
                         </button>

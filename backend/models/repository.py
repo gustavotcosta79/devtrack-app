@@ -23,7 +23,6 @@ class RepositoryResponse (BaseModel):
     created_at: datetime
     complexity: Optional[str] = None
 
-
     class Config:
         from_attributes = True # usado para o Pydantic ler os dados do SQLAlchemy
 

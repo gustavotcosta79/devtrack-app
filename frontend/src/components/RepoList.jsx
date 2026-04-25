@@ -2,7 +2,7 @@ import React from 'react';
 import { BookMarked, Star, Code } from 'lucide-react';
 
 const RepoList = ({repos,username}) => {
-    if (!repos || repos.length == 0){
+    if (!repos || repos.length === 0){
         return null;
     }
 
