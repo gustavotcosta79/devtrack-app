@@ -243,6 +243,30 @@ const App = () =>{
         setUserRepos(userRepos.filter((repo) => repo.id !== repoId))
     }
 
+    const updateRepository = async (repoId, repoUpdatedData) => {
+            const token = localStorage.getItem("token");
+            if (!token) return;
+
+            const updateRepoEndpoint = `${API_BASE_URL}/repositories/${repoId}`;
+
+            const updateResponse = await fetch(updateRepoEndpoint, {
+                method: "PUT",
+                headers: {
+                    accept: 'application/json',
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify(repoUpdatedData)
+            });
+
+            if (!updateResponse.ok){
+                throw new Error ("Error Updating the repository!")
+            }
+
+            setUserRepos(userRepos.map((repo) => repo.id === repoId ? {...repo, ...repoUpdatedData} : repo));
+
+    }
+
 
     return (
         <div className="min-h-screen bg-primary text-white font-sans selection:bg-accent selection:text-white">
@@ -366,7 +390,9 @@ const App = () =>{
                         }/>
 
                         <Route path="/repositories" element={
-                            <RepositoriesPage repos={userRepos} username={userData?.user_info?.username} onDeleteRepo={deleteRepository}/>
+                            <RepositoriesPage
+                                repos={userRepos} username={userData?.user_info?.username} onDeleteRepo={deleteRepository} onUpdateRepo={updateRepository}
+                                />
                         }/>
                     </Routes>
                </main>

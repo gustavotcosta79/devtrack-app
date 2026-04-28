@@ -30,6 +30,10 @@ const Navbar = ({handleLogout, navigate, userData, setIsMenuOpen, isMenuOpen}) =
                             className="w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors cursor-pointer">
                             My Repositories
                         </button>
+                        <button onClick={() => {navigate("/dashboard"); setIsMenuOpen(false)}}
+                                className="w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors cursor-pointer">
+                            My Dashboard
+                        </button>
                         <button onClick={() => {handleLogout(); setIsMenuOpen(false)}}
                                 className="w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-gray-800 transition-colors font-bold cursor-pointer">
                             Logout
