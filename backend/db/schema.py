@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine, String, Float, DateTime, func, ForeignKey
-from sqlalchemy.orm import sessionmaker, DeclarativeBase, Mapped,mapped_column
+from sqlalchemy.orm import sessionmaker, DeclarativeBase, Mapped,mapped_column,relationship
 from datetime import datetime
 
 from core.config import config
@@ -34,6 +34,7 @@ class Repository (Base):
     owner_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     complexity: Mapped[str| None] = mapped_column(String,nullable=True)
+    activities: Mapped [list['GitHubActivity']] = relationship(cascade="all, delete-orphan")
 
 class GitHubActivity (Base):
     __tablename__ = "github_activity"
