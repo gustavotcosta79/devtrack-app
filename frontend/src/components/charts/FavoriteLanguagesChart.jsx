@@ -23,7 +23,7 @@ const FavoriteLanguagesChart = ({ data }) => {
         return Object.entries(langCounts)
             .map(([name, value]) => ({ name, value }))
             .sort((a, b) => b.value - a.value)
-            .slice(0, 5); // Apenas as 5 linguagens principais para o gráfico não ficar confuso
+            .slice(0, 6); // Apenas as 5 linguagens principais para o gráfico não ficar confuso
 
     }, [data]);
 

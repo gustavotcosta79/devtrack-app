@@ -40,6 +40,10 @@ const App = () =>{
 
     const [isMenuOpen, setIsMenuOpen] = useState(false)
 
+    const [authenticatedUser, setAuthenticatedUser] = useState(null)
+    const [myDashboardData, setMyDashboardData] = useState(null);
+    const [myRepositories, setMyRepositories] = useState([]);
+
 
     useEffect(() => {
         if (location.pathname === "/dashboard") {
@@ -65,13 +69,14 @@ const App = () =>{
 
     }, [searchParams, navigate,location.pathname]); // sempre que um componente dá re-render ou os searchParams mudam a hook do useEffect é chamada.
 
-    const handleSearch = async (username, isRefresh = false) => {
+    const handleSearch = async (username, isRefresh = false, isOwner = false) => {
 
             setIsLoading(true);
             setError(null);
 
             if (!isRefresh){
                 setUserData(null);
+                setUserRepos([]);
             }
 
             try {
@@ -114,6 +119,11 @@ const App = () =>{
                 const reposData = await fetchUserRepositories(basicUser.id);
                 setUserRepos(reposData)
 
+                if (isOwner) {
+                    setMyDashboardData(dashboardData);
+                    setMyRepositories(reposData);
+                }
+
                 // sem await que é para o dashboard carregar sem  a recomendação da ai (porque normalmente a recomendação demora mais tempo
                 // que o dashboard), desta maneira o dashboard carrega logo e a recomendação do LLM fica a carregar de fundo
                 fetchAiRecommendation(basicUser.id);
@@ -126,6 +136,14 @@ const App = () =>{
                 setIsLoading(false);
             }
 
+    }
+
+    const loadMyProfile = (path) => {
+        setUserData(myDashboardData);
+        setUserRepos(myRepositories);
+
+        navigate(path);
+        setIsMenuOpen(false);
     }
 
     const fetchCurrentUser = async (token) => {
@@ -144,8 +162,8 @@ const App = () =>{
             if (response.ok){
                 const currentUser = await response.json();
                 console.log ("Current user: ", currentUser);
-
-                handleSearch(currentUser.username, true);
+                setAuthenticatedUser(currentUser)
+                handleSearch(currentUser.username, true, true);
             }
             else {
                 localStorage.removeItem("token");
@@ -215,6 +233,7 @@ const App = () =>{
             navigate("/",{replace:true});
 
             setUserData(null);
+            setAuthenticatedUser(null);
             setUserRepos([]);
             setAiRecommendation(null);
 
@@ -241,6 +260,7 @@ const App = () =>{
         }
 
         setUserRepos(userRepos.filter((repo) => repo.id !== repoId))
+        setMyRepositories(myRepositories.filter((repo) => repo.id !== repoId));
     }
 
     const updateRepository = async (repoId, repoUpdatedData) => {
@@ -264,7 +284,7 @@ const App = () =>{
             }
 
             setUserRepos(userRepos.map((repo) => repo.id === repoId ? {...repo, ...repoUpdatedData} : repo));
-
+            setMyRepositories(myRepositories.map((repo) => repo.id === repoId ? {...repo, ...repoUpdatedData} : repo));
     }
 
 
@@ -273,7 +293,10 @@ const App = () =>{
             <div className="max-w-5xl mx-auto px-6 py-10">
 
                 <header className="flex items-center justify-between mb-12">
-                    <Navbar handleLogout={() =>handleLogout()} navigate={navigate} userData={userData} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen}/>
+                    <Navbar handleLogout={() =>handleLogout()} navigate={navigate}
+                            userData={authenticatedUser ? { user_info: authenticatedUser } : null}
+                            isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen}
+                            loadMyProfile={loadMyProfile}/>
                 </header>
 
                 <main>
@@ -319,7 +342,7 @@ const App = () =>{
                         <Route path="/dashboard" element={
                             <div className="mt-10 text-center items-center">
                                 <div className="mb-10">
-                                    <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} onSearch={handleSearch}></SearchBar>
+                                    <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} onSearch={handleSearch} setMenuOpen={setIsMenuOpen}></SearchBar>
                                 </div>
 
                                 {userData ? (
@@ -329,7 +352,10 @@ const App = () =>{
                                         <UserProfile
                                             userInfo={userData.user_info}
                                             devScore={userData.current_devscore}
-                                            onRefresh={()=>handleSearch(userData.user_info.username,true)}
+                                            onRefresh={()=>{
+                                                const isOwner = authenticatedUser && authenticatedUser.username === userData.user_info.username;
+                                                handleSearch(userData.user_info.username,true, isOwner);
+                                            }}
                                             isRefreshing={isLoading}
                                         />
                                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10 w-full text-left">
