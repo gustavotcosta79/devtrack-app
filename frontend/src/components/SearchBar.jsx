@@ -2,11 +2,12 @@ import React from 'react'
 import { Search } from 'lucide-react';
 
 
-const SearchBar = ({searchTerm, setSearchTerm,onSearch}) => {
+const SearchBar = ({searchTerm, setSearchTerm,onSearch,setMenuOpen}) => {
 
     const handleKeyDown = (e) =>{
         if (e.key==='Enter' && searchTerm.trim() !== ''){
             onSearch(searchTerm);
+            setSearchTerm("");
         }
     }
 
@@ -15,7 +16,7 @@ const SearchBar = ({searchTerm, setSearchTerm,onSearch}) => {
             <div className='relative flex items-center '>
                 <Search className="absolute left-4 w-5 h-5 text-gray-400"/>
 
-                <input
+                <input onClick={()=>setMenuOpen(false)}
                 type={'text'}
                 value={searchTerm}
                 placeholder={"Search for an user"}

@@ -1,8 +1,8 @@
-import React, {Fragment, useState} from 'react'
+import React, {Fragment} from 'react'
 
 
 
-const Navbar = ({handleLogout, navigate, userData, setIsMenuOpen, isMenuOpen}) => {
+const Navbar = ({handleLogout, navigate, userData, setIsMenuOpen, isMenuOpen, loadMyProfile}) => {
 
     return (
         <Fragment>
@@ -12,7 +12,7 @@ const Navbar = ({handleLogout, navigate, userData, setIsMenuOpen, isMenuOpen}) =
             <div className="relative flex-col items-center" >
                 {userData ? (
                         <img
-                            src={userData.user_info.avatar_url}
+                            src={userData?.user_info?.avatar_url}
                             alt={userData.username}
                             className={"w-10 h-10 rounded-full cursor-pointer hover:ring-2 hover:ring-accent object-cover"}
                             onClick={()=>setIsMenuOpen(!isMenuOpen)}
@@ -26,12 +26,12 @@ const Navbar = ({handleLogout, navigate, userData, setIsMenuOpen, isMenuOpen}) =
                         <button className="w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors cursor-pointer">
                             My profile
                         </button>
-                        <button onClick={() => {navigate("/repositories"); setIsMenuOpen(false)}}
+                        <button onClick={() => loadMyProfile("/repositories")}
                             className="w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors cursor-pointer">
                             My Repositories
                         </button>
-                        <button onClick={() => {navigate("/dashboard"); setIsMenuOpen(false)}}
-                                className="w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors cursor-pointer">
+                        <button onClick={() => loadMyProfile("/dashboard")}
+                            className="w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors cursor-pointer">
                             My Dashboard
                         </button>
                         <button onClick={() => {handleLogout(); setIsMenuOpen(false)}}

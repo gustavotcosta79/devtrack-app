@@ -55,12 +55,15 @@ class RepositoryService:
         self.db.refresh(db_repo)
         return db_repo
 
-    def delete (self, repo_id : int):
-        if self.db.query(Repository).filter(Repository.id == repo_id).delete():
+    def delete(self, repo_id: int):
+        repo = self.get_repository_by_id(repo_id)
+
+        if repo:
+            self.db.delete(repo)
             self.db.commit()
             return True
-        else:
-            return False
+
+        return False
 
     def calculate_complexity(self,size_kb:int) -> str:
 
