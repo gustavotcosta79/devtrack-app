@@ -16,7 +16,8 @@ import {Route} from "react-router-dom";
 import {useSearchParams} from "react-router-dom";
 import {useNavigate, useLocation} from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
-import RepositoriesPage from "./components/RepositoriesPage.jsx";
+import RepositoriesPage from "./Pages/RepositoriesPage.jsx";
+import SettingsPage from "./Pages/SettingsPage.jsx";
 
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
@@ -244,23 +245,28 @@ const App = () =>{
     const deleteRepository = async (repoId) => {
         const token = localStorage.getItem("token");
         if (!token) return;
+        try{
+            const deleteReposEndpoint = `${API_BASE_URL}/repositories/${repoId}`;
 
-        const deleteReposEndpoint = `${API_BASE_URL}/repositories/${repoId}`;
+            const deleteRepoResponse = await fetch (deleteReposEndpoint, {
+                method: 'DELETE',
+                headers:{
+                    accept:'application/json',
+                    Authorization: `Bearer ${token}`
+                }
+            });
 
-        const deleteReponse = await fetch (deleteReposEndpoint, {
-            method: 'DELETE',
-            headers:{
-                accept:'application/json',
-                Authorization: `Bearer ${token}`
+            if (!deleteRepoResponse.ok){
+                throw new Error ('Error Deleting the Repository')
             }
-        });
 
-        if (!deleteReponse.ok){
-            throw new Error ('Error Deleting the Repository')
+            setUserRepos(userRepos.filter((repo) => repo.id !== repoId))
+            setMyRepositories(myRepositories.filter((repo) => repo.id !== repoId));
+        } catch (error){
+            console.error("Erro ao apagar repositorio: ", error);
+            alert("Operation to delete this repository was not possible. Try again later.");
         }
 
-        setUserRepos(userRepos.filter((repo) => repo.id !== repoId))
-        setMyRepositories(myRepositories.filter((repo) => repo.id !== repoId));
     }
 
     const updateRepository = async (repoId, repoUpdatedData) => {
@@ -285,6 +291,33 @@ const App = () =>{
 
             setUserRepos(userRepos.map((repo) => repo.id === repoId ? {...repo, ...repoUpdatedData} : repo));
             setMyRepositories(myRepositories.map((repo) => repo.id === repoId ? {...repo, ...repoUpdatedData} : repo));
+    }
+
+    const deleteUser = async (userId) => {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        try {
+            const deleteUserEndpoint = `${API_BASE_URL}/users/${userId}`
+
+            const deleteUserResponse = await fetch(deleteUserEndpoint,{
+                method: 'DELETE',
+                headers:{
+                    accept: 'application/json',
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            if (!deleteUserResponse.ok){
+                throw new Error ('Error Deleting the account');
+            }
+            handleLogout();
+        }
+        catch (error) {
+            console.error("Erro ao apagar conta: ", error);
+            alert("Error deleting account. Try again later.");
+        }
+
     }
 
 
@@ -409,7 +442,7 @@ const App = () =>{
                                     </div>
                                 ) : (
                                     <p className="text-gray-400 mt-20 text-xl animate-pulse">
-                                        A carregar o teu DevTrack...
+                                        Loading your DevTrack...
                                     </p>
                                 )}
                             </div>
@@ -419,6 +452,10 @@ const App = () =>{
                             <RepositoriesPage
                                 repos={userRepos} username={userData?.user_info?.username} onDeleteRepo={deleteRepository} onUpdateRepo={updateRepository}
                                 />
+                        }/>
+
+                        <Route path="/settings" element={
+                            <SettingsPage user={authenticatedUser} onDeleteUser={deleteUser}/>
                         }/>
                     </Routes>
                </main>

@@ -23,6 +23,8 @@ class User(Base):
     dev_score: Mapped[float] = mapped_column(Float,default=0.0)
     last_sync: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), onupdate=func.now())
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    repositories = relationship("Repository", back_populates="owner", cascade="all, delete-orphan")
+    devscore_history = relationship("DevScoreHistory", back_populates="user", cascade="all, delete-orphan")
 
 class Repository (Base):
     __tablename__ = "repositories"
@@ -35,6 +37,7 @@ class Repository (Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     complexity: Mapped[str| None] = mapped_column(String,nullable=True)
     activities: Mapped [list['GitHubActivity']] = relationship(cascade="all, delete-orphan")
+    owner = relationship("User", back_populates="repositories")
 
 class GitHubActivity (Base):
     __tablename__ = "github_activity"
@@ -50,5 +53,6 @@ class DevScoreHistory (Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     score: Mapped[float] = mapped_column(Float,index=True)
     calculated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    user = relationship("User", back_populates="devscore_history")
 
 

@@ -23,8 +23,9 @@ const Navbar = ({handleLogout, navigate, userData, setIsMenuOpen, isMenuOpen, lo
 
                 { isMenuOpen ? (
                     <div className="absolute right-0 top-14 w-48 bg-secondary border border-gray-800 rounded-xl shadow-2xl z-50 overflow-hidden">
-                        <button className="w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors cursor-pointer">
-                            My profile
+                        <button onClick={() => loadMyProfile("/settings")}
+                            className="w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors cursor-pointer">
+                            Settings
                         </button>
                         <button onClick={() => loadMyProfile("/repositories")}
                             className="w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors cursor-pointer">

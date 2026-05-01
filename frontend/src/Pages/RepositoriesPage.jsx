@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {Code, Star,Eye, Pencil, Trash2} from "lucide-react";
 
 const RepositoriesPage = ({username,repos,onDeleteRepo, onUpdateRepo}) => {
@@ -74,7 +74,6 @@ const RepositoriesPage = ({username,repos,onDeleteRepo, onUpdateRepo}) => {
                     </div>
                 )
             })}
-
 
             {/* Modal para abrir a janela de edição do repositório */}
             {isEditModalOpen ? (
@@ -163,7 +162,6 @@ const RepositoriesPage = ({username,repos,onDeleteRepo, onUpdateRepo}) => {
                 </div>
             ) : null
             }
-
         </div>
     )
 }
