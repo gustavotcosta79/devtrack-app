@@ -54,7 +54,9 @@ class UserService:
         return db_user
 
     def delete(self, user_id: int):
-        if self.db.query(User).filter(User.id == user_id).delete():
+        user = self.get_by_user_id(user_id)
+        if user:
+            self.db.delete(user)
             self.db.commit()
             return True
         else:
