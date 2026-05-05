@@ -10,3 +10,9 @@ body {
   background-color: var(--color-primary);
   color: white;
 }
+
+.light-mode {
+  --color-primary: #707070;
+  --color-secondary: #5a5a5a;
+  --color-accent: #10B981; /* Verde Esmeralda para os destaques e DevScore */
+}
