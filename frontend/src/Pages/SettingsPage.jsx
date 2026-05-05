@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 
-const SettingsPage = ({user, onDeleteUser}) => {
+const SettingsPage = ({user, onDeleteUser,setTheme, theme}) => {
 
   const [activeTab, setActiveTab] = useState("profile")
   const [editUserData, setEditUserData] = useState(null)
@@ -27,6 +27,7 @@ const SettingsPage = ({user, onDeleteUser}) => {
             : "bg-secondary border-gray-800 text-gray-400 hover:bg-gray-800 hover:text-white"
     }`;
   };
+
 
   return (
       <div className="flex flex-col md:flex-row gap-8 w-full animate-in fade-in duration-500">
@@ -71,7 +72,7 @@ const SettingsPage = ({user, onDeleteUser}) => {
                        className="w-full bg-[#1c2128] border border-gray-700 rounded-lg p-3 text-gray-500 cursor-not-allowed outline-none"
                 />
                 Email:
-                <input type="text" value={editUserData?.email || ""} readOnly={true}
+                <input type="text" value={editUserData?.email || "*Email set private on github options*"} readOnly={true}
                        className="w-full bg-[#1c2128] border border-gray-700 rounded-lg p-3 text-gray-500 cursor-not-allowed outline-none"
                 />
                 Avatar:
@@ -80,7 +81,49 @@ const SettingsPage = ({user, onDeleteUser}) => {
                 />
               </div>
           ): activeTab === 'appearance' ? (
-              <div> comming soonnnnnnnnnnnnnn</div>
+              <div className="flex flex-col gap-6">
+                <div>
+                  <h1 className="text-2xl font-bold text-white mb-1">Appearance</h1>
+                  <p className="text-gray-400 text-sm">Customize how DevTrack looks on your device.</p>
+                </div>
+
+                <hr className="border-gray-800" />
+
+                {/* Grelha de Cartões de Tema */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+
+                  {/* Cartão Dark Mode */}
+                  <button
+                      onClick={() => setTheme("dark")}
+                      className={`flex flex-col items-center justify-center p-8 rounded-2xl border-2 transition-all cursor-pointer ${
+                          theme === 'dark'
+                              ? 'border-accent bg-accent/10 ]'
+                              : 'border-gray-800 bg-primary hover:border-gray-600'
+                      }`}
+                  >
+                    <span className="text-5xl mb-4">🌙</span>
+                    <span className={`text-lg font-bold ${theme === 'dark' ? 'text-accent' : 'text-gray-400'}`}>
+                              Dark Mode
+                          </span>
+                  </button>
+
+                  {/* Cartão Light Mode */}
+                  <button
+                      onClick={() => setTheme("light")}
+                      className={`flex flex-col items-center justify-center p-8 rounded-2xl border-2 transition-all cursor-pointer ${
+                          theme === 'light'
+                              ? 'border-accent bg-accent/10'
+                              : 'border-gray-800 bg-primary hover:border-gray-600'
+                      }`}
+                  >
+                    <span className="text-5xl mb-4">☀️</span>
+                    <span className={`text-lg font-bold ${theme === 'light' ? 'text-accent' : 'text-gray-400'}`}>
+                              Light Mode
+                          </span>
+                  </button>
+
+                </div>
+              </div>
           ) : activeTab === 'account' ? (
               <div>
                 <div>

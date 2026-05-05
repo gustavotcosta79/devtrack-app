@@ -11,12 +11,22 @@ const RepositoriesPage = ({username,repos,onDeleteRepo, onUpdateRepo}) => {
     const [repoToEdit, setRepoToEdit] = useState(null)
     const [editFormData, setEditFormData] = useState(null)
 
+    const [isSaving,setIsSaving] = useState(false)
+
     if (!repos || repos.length === 0){
         return (
             <p>
                 No repositories found
             </p>
         )
+    }
+
+    const handleSave = async (repoId,repoData) => {
+        setIsSaving(true);
+        await onUpdateRepo (repoId,repoData);
+        setIsSaving(false);
+        setIsEditModalOpen(false);
+        setRepoToEdit(null);
     }
 
     const handleDelete = async (repoId,repoName) => {
@@ -107,9 +117,14 @@ const RepositoriesPage = ({username,repos,onDeleteRepo, onUpdateRepo}) => {
                                     onClick={() => {setIsEditModalOpen(false); setRepoToEdit(null)}}>
                                 Cancel
                             </button>
-                            <button className="cursor-pointer w-30 bg-accent text-white rounded-2xl hover:bg-green-250 border-green-950 border-2"
-                                    onClick={() => {onUpdateRepo(repoToEdit.id, editFormData); setIsEditModalOpen(false); setRepoToEdit(null)}}>
-                                Save changes
+                            <button disabled={isSaving}
+                                    className="cursor-pointer w-30 bg-accent text-white rounded-2xl hover:bg-green-250 border-green-950 border-2"
+                                    onClick={() => handleSave(repoToEdit.id, editFormData)}>
+                                {isSaving ? (
+                                        "Saving..."
+                                    ) :
+                                    "Save Changes"
+                                }
                             </button>
                         </div>
                     </div>

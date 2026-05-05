@@ -18,6 +18,8 @@ import {useNavigate, useLocation} from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
 import RepositoriesPage from "./Pages/RepositoriesPage.jsx";
 import SettingsPage from "./Pages/SettingsPage.jsx";
+import {toast, Toaster} from "react-hot-toast";
+import NotFoundPage from "./Pages/NotFoundPage.jsx";
 
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
@@ -45,6 +47,19 @@ const App = () =>{
     const [myDashboardData, setMyDashboardData] = useState(null);
     const [myRepositories, setMyRepositories] = useState([]);
 
+    const [theme, setTheme] = useState(localStorage.getItem("theme"))
+
+    useEffect(() => {
+        const element = document.body;
+        if (theme === 'light'){
+            element.classList.add("light-mode")
+        }
+        else if (theme === 'dark'){
+            element.classList.remove("light-mode")
+        }
+
+        localStorage.setItem("theme",theme)
+    }, [theme]);
 
     useEffect(() => {
         if (location.pathname === "/dashboard") {
@@ -262,9 +277,10 @@ const App = () =>{
 
             setUserRepos(userRepos.filter((repo) => repo.id !== repoId))
             setMyRepositories(myRepositories.filter((repo) => repo.id !== repoId));
+            toast.success("Repository Deleted!")
         } catch (error){
             console.error("Erro ao apagar repositorio: ", error);
-            alert("Operation to delete this repository was not possible. Try again later.");
+            toast.error("Operation to delete this repository was not possible. Try again later.");
         }
 
     }
@@ -273,24 +289,28 @@ const App = () =>{
             const token = localStorage.getItem("token");
             if (!token) return;
 
-            const updateRepoEndpoint = `${API_BASE_URL}/repositories/${repoId}`;
+            try {
+                const updateRepoEndpoint = `${API_BASE_URL}/repositories/${repoId}`;
 
-            const updateResponse = await fetch(updateRepoEndpoint, {
-                method: "PUT",
-                headers: {
-                    accept: 'application/json',
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
-                },
-                body: JSON.stringify(repoUpdatedData)
-            });
+                const updateResponse = await fetch(updateRepoEndpoint, {
+                    method: "PUT",
+                    headers: {
+                        accept: 'application/json',
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: JSON.stringify(repoUpdatedData)
+                });
 
-            if (!updateResponse.ok){
-                throw new Error ("Error Updating the repository!")
+                if (!updateResponse.ok){
+                    throw new Error ("Error Updating the repository!")
+                }
+                setUserRepos(userRepos.map((repo) => repo.id === repoId ? {...repo, ...repoUpdatedData} : repo));
+                setMyRepositories(myRepositories.map((repo) => repo.id === repoId ? {...repo, ...repoUpdatedData} : repo));
+                toast.success("Repository Updated!")
+            } catch (error){
+                toast.error ("Error Updating the repository")
             }
-
-            setUserRepos(userRepos.map((repo) => repo.id === repoId ? {...repo, ...repoUpdatedData} : repo));
-            setMyRepositories(myRepositories.map((repo) => repo.id === repoId ? {...repo, ...repoUpdatedData} : repo));
     }
 
     const deleteUser = async (userId) => {
@@ -311,11 +331,12 @@ const App = () =>{
             if (!deleteUserResponse.ok){
                 throw new Error ('Error Deleting the account');
             }
+            toast.success("User account deleted!");
             handleLogout();
         }
         catch (error) {
             console.error("Erro ao apagar conta: ", error);
-            alert("Error deleting account. Try again later.");
+            toast.error("Error deleting account. Try again later.");
         }
 
     }
@@ -323,6 +344,7 @@ const App = () =>{
 
     return (
         <div className="min-h-screen bg-primary text-white font-sans selection:bg-accent selection:text-white">
+            <Toaster/>
             <div className="max-w-5xl mx-auto px-6 py-10">
 
                 <header className="flex items-center justify-between mb-12">
@@ -455,8 +477,14 @@ const App = () =>{
                         }/>
 
                         <Route path="/settings" element={
-                            <SettingsPage user={authenticatedUser} onDeleteUser={deleteUser}/>
+                            <SettingsPage user={authenticatedUser} onDeleteUser={deleteUser} setTheme={setTheme} theme={theme}/>
                         }/>
+
+                        <Route path="*" element={
+                            <NotFoundPage navigate={navigate}/>
+                        }
+                        />
+
                     </Routes>
                </main>
             </div>
