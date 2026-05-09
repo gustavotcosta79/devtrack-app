@@ -31,6 +31,23 @@ def import_user_from_github (github_username: str,db: Session = Depends(get_db))
 
     return service.sync_user_from_github(github_username)
 
+@router.get("/leaderboard")
+def get_leaderboard (current_user : User = Depends(get_current_user), db: Session = Depends(get_db)):
+    user_service = UserService(db)
+
+    leaderboard_list = user_service.get_leaderboard()
+    user_rank = user_service.get_user_rank(current_user.id)
+
+    return {
+        "current_user": {
+            "username" : current_user.username,
+            "devscore": current_user.dev_score,
+            "avatar_url": current_user.avatar_url,
+            "rank": user_rank
+        },
+        "top_users": leaderboard_list
+    }
+
 @router.get("/github/{github_id}", response_model= UserResponse)
 def get_user_by_github_id (github_id : int, db: Session = Depends(get_db),current_user: User = Depends(get_current_user)):
 
@@ -44,6 +61,7 @@ def get_user_by_github_id (github_id : int, db: Session = Depends(get_db),curren
 @router.get("/me",response_model=UserResponse)
 def get_current_user_info (current_user : User = Depends(get_current_user)):
     return current_user
+
 @router.get("/{user_id}", response_model=UserResponse)
 def get_user (user_id : int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
 

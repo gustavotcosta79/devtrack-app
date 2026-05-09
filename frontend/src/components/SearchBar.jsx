@@ -7,7 +7,6 @@ const SearchBar = ({searchTerm, setSearchTerm,onSearch,setMenuOpen}) => {
     const handleKeyDown = (e) =>{
         if (e.key==='Enter' && searchTerm.trim() !== ''){
             onSearch(searchTerm);
-            setSearchTerm("");
         }
     }
 
