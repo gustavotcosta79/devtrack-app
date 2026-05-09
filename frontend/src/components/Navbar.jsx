@@ -9,6 +9,10 @@ const Navbar = ({handleLogout, navigate, userData, setIsMenuOpen, isMenuOpen, lo
             <h1 className="text-2xl font-bold tracking-wider cursor-pointer" onClick={() => {navigate("/"); setIsMenuOpen(false)}}>
                 <span className="text-accent">{'{'}</span> DevTrack <span className="text-accent">{'}'}</span>
             </h1>
+            <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-accent font-bold hover:bg-emerald-400 hover:scale-105 transition-all shadow-lg cursor-pointer text-white"
+                onClick={() => {navigate("/leaderboard"); setIsMenuOpen(false)}}>
+                Leaderboard
+            </button>
             <div className="relative flex-col items-center" >
                 {userData ? (
                         <img

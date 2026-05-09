@@ -34,7 +34,6 @@ const NotFoundPage = ({navigate}) => {
                     onClick={() => navigate("/")}>
                 Go back to the base
             </button>
-
         </div>
     )
 }

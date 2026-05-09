@@ -12,7 +12,7 @@ body {
 }
 
 .light-mode {
-  --color-primary: #707070;
+  --color-primary: #8a8a8a;
   --color-secondary: #5a5a5a;
   --color-accent: #10B981; /* Verde Esmeralda para os destaques e DevScore */
 }

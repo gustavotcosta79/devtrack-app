@@ -199,5 +199,14 @@ class UserService:
 
         return db_user
 
+    def get_leaderboard (self, limit=50):
+        return self.db.query(User).order_by(User.dev_score.desc()).limit(limit).all()
 
+    def get_user_rank (self, user_id:int):
+        user = self.get_by_user_id(user_id)
+        if not user:
+            return None
 
+        user_devscore = user.dev_score
+        counter = self.db.query(User).filter(User.dev_score > user_devscore).count() + 1
+        return counter

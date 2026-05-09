@@ -20,6 +20,7 @@ import RepositoriesPage from "./Pages/RepositoriesPage.jsx";
 import SettingsPage from "./Pages/SettingsPage.jsx";
 import {toast, Toaster} from "react-hot-toast";
 import NotFoundPage from "./Pages/NotFoundPage.jsx";
+import LeaderboardPage from "./Pages/LeaderboardPage.jsx";
 
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
@@ -336,7 +337,7 @@ const App = () =>{
         }
         catch (error) {
             console.error("Erro ao apagar conta: ", error);
-            toast.error("Error deleting account. Try again later.");
+            toast.error("Error deleting user account. Try again later.");
         }
 
     }
@@ -358,7 +359,7 @@ const App = () =>{
                     <Routes>
                         <Route path="/" element={
 
-                            <div className="mt-10 text-center items-center">
+                            <div className="mt-40 text-center items-center">
                                 {localStorage.getItem("token") ? (
                                     <div>
                                         <button onClick={() => {navigate("/dashboard"); setIsMenuOpen(false)}}
@@ -479,6 +480,11 @@ const App = () =>{
                         <Route path="/settings" element={
                             <SettingsPage user={authenticatedUser} onDeleteUser={deleteUser} setTheme={setTheme} theme={theme}/>
                         }/>
+
+                        <Route path="/leaderboard" element={
+                            <LeaderboardPage />
+                        }
+                        />
 
                         <Route path="*" element={
                             <NotFoundPage navigate={navigate}/>
