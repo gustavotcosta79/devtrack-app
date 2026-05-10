@@ -434,7 +434,7 @@ const App = () =>{
                                             <StatCard
                                                 title="DevTrack Level"
                                                 // Uma pequena lógica para dar um "Nível" com base na nota
-                                                value={userData.current_devscore >= 80 ? "Sénior" : userData.current_devscore >= 40 ? "Pleno" : "Júnior"}
+                                                value={userData.current_devscore >= 80 ? "Senior" : userData.current_devscore >= 40 ? "Mid-Level" : "Junior"}
                                                 icon={Trophy}
                                             />
                                         </div>
