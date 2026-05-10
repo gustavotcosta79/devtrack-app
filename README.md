@@ -20,16 +20,16 @@
 
 ## 📸 Gallery
 
-<p align="center">
-  <span> Dashboard </span>
+<div align="center">
+  <h1> Dashboard </h1>
   <img src="https://github.com/gustavotcosta79/devtrack-app/blob/main/docs/dashboard1.png" width="48%" alt="Dashboard" />
   <img src="https://github.com/gustavotcosta79/devtrack-app/blob/main/docs/dashboard2.png" width="48%" alt="Dashboard" />
   <img src="https://github.com/gustavotcosta79/devtrack-app/blob/main/docs/dashboard3.png" width="48%" alt="Dashboard" />
   
   <br> <br>
-  <span> Leaderboard </span>
+  <h1> Leaderboard </h1>
   <img src="https://github.com/gustavotcosta79/devtrack-app/blob/main/docs/leaderboard.png" width="48%" alt="Leaderboard" />
-</p>
+</div>
 
 ---
 
