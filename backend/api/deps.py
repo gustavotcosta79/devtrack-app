@@ -27,7 +27,7 @@ def get_current_user(db: Session = Depends(get_db),
     try:
         payload = jwt.decode(token.credentials,config.jwt_secret_key,algorithms=['HS256'])
 
-        user_id_str: str = payload.get('sub')
+        user_id_str: str = payload.get('sub') # Procura o campo sub (subject) dentro do token, que guarda o ID do utilizador
         if user_id_str is None:
             raise credentials_exception
 

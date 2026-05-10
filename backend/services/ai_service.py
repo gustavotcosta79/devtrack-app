@@ -7,23 +7,28 @@ class AIService:
 
     def generate_recommendation (self, dev_score: float, top_languages: str, complexity_level: str):
         prompt_messages = [
-            {
-                "role": "system",
-                "content": ("És um Tech Lead e Mentor de Carreira exigente mas encorajador. "
-                            "O teu objetivo é analisar as métricas de um programador e dar UMA recomendação técnica incisiva e acionável. "
-                            "Responde em português de Portugal. Máximo de 3 frases. "
-                            "Estrutura a resposta assim: 1) Um breve elogio ou constatação sobre o nível e stack atual. "
-                            "2) O passo técnico óbvio seguinte para ele evoluir (ex: sugerir um padrão de desenho, aprender CI/CD, testes automáticos, arquitetura, ou uma linguagem complementar). "
-                            "Não uses formatação markdown (sem asteriscos ou bold).")
-            },
-            {
-                "role": "user",
-                "content": (f"Avalia este programador. O seu nível global é um DevScore de {dev_score} (numa escala onde 0-39 é Júnior, 40-79 é Pleno e 80-100 é Sénior). "
-                            f"Ele programa essencialmente em: {top_languages}. "
-                            f"O tamanho/complexidade típica dos seus repositórios é: {complexity_level}. "
-                            "O que é que ele deve aprender ou começar a fazer nos seus projetos a seguir para subir de nível?")
-            }
-        ]
+                    {
+                        "role": "system",
+                        "content": (
+                            "You are a demanding but encouraging Tech Lead and Career Mentor. "
+                            "Your goal is to analyze a developer's metrics and provide ONE incisive and actionable technical recommendation. "
+                            "Maximum of 3 sentences. "
+                            "Structure your response as follows: 1) A brief compliment or observation about their current level and stack. "
+                            "2) The obvious next technical step for them to evolve (e.g., suggesting a design pattern, learning CI/CD, automated testing, system architecture, or a complementary language). "
+                            "Do not use markdown formatting (no asterisks or bold text)."
+                        )
+                    },
+                    {
+                        "role": "user",
+                        "content": (
+                            f"Evaluate this developer. Their overall level is a DevScore of {dev_score} "
+                            f"(on a scale where 0-39 is Junior, 40-79 is Mid-Level, and 80-100 is Senior). "
+                            f"They mainly program in: {top_languages}. "
+                            f"The typical size/complexity of their repositories is: {complexity_level}. "
+                            "What should they learn or start doing in their next projects to level up?"
+                        )
+                    }
+                ]
 
         response = self.client.chat.completions.create(
             messages = prompt_messages,

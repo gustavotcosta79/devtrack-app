@@ -50,7 +50,7 @@ const LeaderboardPage = () => {
             {isLoading ? (
                 <div className="flex flex-col items-center gap-4 mt-20">
                     <Spinner />
-                    <p className="text-gray-400 animate-pulse">Fetching the best of the best...</p>
+                    <p className="text-gray-400 animate-pulse">Fetching the Global Leaderboard...</p>
                 </div>
             ) : leaderboardData ? (
                 <div className="bg-secondary border-2 border-accent rounded-2xl p-6 mt-10">
