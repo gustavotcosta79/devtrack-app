@@ -1,56 +1,88 @@
 # 🚀 DevTrack
 
-💡 This project is STILL under continuous development as part of a technical portfolio.
+<div align="center">
+  <img src="shields.io" alt="Status" />
+  <img src="shields.io" alt="Build Status" />
+  <img src="shields.io" alt="React" />
+  <img src="shields.io" alt="FastAPI" />
+  <img src="shields.io" alt="Docker" />
+</div>
 
-### Developer Activity Analytics & AI Recommendations Platform
-**DevTrack** is a full-stack platform. It goes beyond basic versioning statistics. It integrates with the GitHub API. The system collects, analyzes, and evaluates developer activity. It calculates a custom **DevScore**. It also classifies repository complexity.
+<br/>
 
-The goal is to provide a clear view of technical evolution. It also generates targeted learning recommendations using Artificial Intelligence.
+> **Developer Activity Analytics & AI Recommendations Platform**  
+> DevTrack is a full-stack gamified platform that goes beyond basic versioning statistics. By natively integrating with the GitHub API, the system collects, analyzes, and evaluates developer activity, calculates a custom **DevScore**, and ranks users on a Global Leaderboard.
+
+🌐 **Live Demo:** [https://devtrack-app-green.vercel.app]  
+*(Note: The backend is hosted on Render, so the first login might take ~30 seconds to wake up the server!)*
+
 ---
+
+## 📸 Gallery
+
+<p align="center">
+  <img src="placehold.co" width="48%" alt="Dashboard" />
+  <img src="placehold.co" width="48%" alt="Leaderboard" />
+</p>
+
+---
+
 ## ✨ Main Features
+
 ### ✅ Implemented
-* **Automatic Data Pipeline:** Native integration with the GitHub API for extracting repositories, commits, languages, and time history.
-* **DevScore Engine:** A mathematical calculation algorithm. It evaluates consistency, technological diversity, and activity level. It assigns a seniority level (*Junior, Full, Senior*).
-* **Interactive Dashboard:** A rich and responsive interface. It has smooth temporal graphs (language evolution, commits per month, score history).
-* **Complexity Analysis:** Automatic evaluation and categorization of the complexity of each repository (*Small, Medium, Large*) based on backend metrics.* 
-**AI Recommendations:** Integration with LLMs (Groq). This generates study advice and customized stack diversification. 
-* **Secure Authentication:** Login via GitHub OAuth 2.0.
-* **Continuous Integration / Continuous Deployment (CI/CD):** Automated testing and build pipelines using GitHub Actions.
-* **Infrastructure and Deploy:** Complete Dockerization of the full stack (Frontend, Backend, DB) and automated cloud deployment (e.g., Render, Vercel).
+* **🏆 Gamification & Global Leaderboard:** Top 50 developers ranking based on DevScore, featuring dynamic medals and quick links to GitHub profiles.
+* **⚙️ Automatic Data Pipeline:** Native integration with the GitHub API to extract repositories, commits, languages, and historical timelines.
+* **📊 DevScore Engine:** A custom mathematical algorithm that evaluates consistency, technological diversity, and activity volume, assigning a seniority tier (*Junior, Mid-Level, Senior*).
+* **🤖 AI-Powered Recommendations:** Deep integration with Groq LLM to generate targeted study advice and stack diversification tips based on user metrics.
+* **📈 Interactive Dashboard:** A rich, responsive UI with smooth temporal charts (Language evolution, Commits per month, Score history) built with Recharts.
+* **🧠 Complexity Analysis:** Automatic evaluation and categorization of repository complexity (*Small, Medium, Large*).
+* **🔐 Secure Authentication:** Seamless login via GitHub OAuth 2.0.
+* **🚀 CI/CD & Cloud Deployment:** Automated testing and build pipelines using GitHub Actions, deployed to **Vercel** (Frontend) and **Render** (Backend).
 
-### 🗺️ Roadmap (To Implement)
-* **Improve UX:** Using the CRUD operations (like edit personal information, delete repositories, etc)
-* **Documentation/Demo:** Elaborate documentation (like a report) of the choices/decisions made in the progress of the project. Record a demo on the application.
-* **UPDATE READ.ME**
-* **Search improvements:** Search improvements and new functionalities for the app
-
+### 🗺️ Roadmap (Upcoming)
+- [ ] **Advanced Search:** Enhanced global search functionality to find and compare specific developers.
+- [ ] **Architecture Documentation:** Write a detailed technical report explaining architectural choices and database design.
 ---
+
 ## 🛠️ Tech Stack
 
-| Layer      | Technologies                                       |
-| :--------- | :------------------------------------------------- |
-| **Frontend** | React, Vite, Tailwind CSS, Recharts, Lucide React  |
-| **Backend** | Python, FastAPI, SQLAlchemy                        |
-| **Database** | PostgreSQL                                         |
-| **DevOps** | Docker, GitHub Actions                             |
-| **Services** | GitHub REST API (Coming soon: Groq Llama 3 API)    |
+
+| Layer | Technologies |
+| :--- | :--- |
+| **Frontend** | React, Vite, Tailwind CSS, Recharts, React Router, Lucide Icons |
+| **Backend** | Python, FastAPI, SQLAlchemy, Uvicorn |
+| **Database** | PostgreSQL (Neon/Cloud) |
+| **DevOps** | Docker, Docker Compose, GitHub Actions |
+| **Integrations**| GitHub REST API, Groq LLM API |
 
 ---
-## 🚀 How to Run the Project (Example)
+
+## 🐳 How to Run Locally
+
+The easiest way to run the project locally is by using **Docker**.
+
+### 1. Clone the repository
 ```bash
-# Clone the repository
-git clone [https://github.com/YourUsername/DevTrack.git](https://github.com/YourUsername/DevTrack.git)
+git clone github.com
+cd DevTrack
+```
 
-# Install Backend dependencies
-cd backend
-pip install -r requirements.txt
+### 2. Environment Variables
 
-# Install Frontend dependencies
-cd ../frontend
-npm install
-npm run dev
-------------------------------
+Create a `.env` file in the root of the backend and frontend folders (use the provided `.env.example` as a reference).  
+You will need:
+* A GitHub OAuth App (Client ID & Secret).
+* A PostgreSQL Database URL.
+* A Groq API Key.
 
-💡 This project is STILL under continuous development as part of a technical portfolio.
+### 3. Build and Run with Docker
 
+```bash
+# This will build the images and start the Frontend, Backend, and Database containers
+docker compose up --build
+```
 
+* **Frontend:** Available at http://localhost:5173
+* **Backend API Docs:** Available at http://localhost:8000/docs
+
+*(To stop the containers, use `docker compose down`)*
