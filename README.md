@@ -24,6 +24,7 @@
   <img src="https://github.com/gustavotcosta79/devtrack-app/blob/main/docs/dashboard1.png" width="48%" alt="Dashboard" />
   <img src="https://github.com/gustavotcosta79/devtrack-app/blob/main/docs/dashboard2.png" width="48%" alt="Dashboard" />
   <img src="https://github.com/gustavotcosta79/devtrack-app/blob/main/docs/dashboard3.png" width="48%" alt="Dashboard" />
+  <br>
   <img src="https://github.com/gustavotcosta79/devtrack-app/blob/main/docs/leaderboard.png" width="48%" alt="Leaderboard" />
 </p>
 
