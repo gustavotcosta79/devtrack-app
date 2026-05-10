@@ -1,11 +1,11 @@
 # 🚀 DevTrack
 
 <div align="center">
-  <img src="shields.io" alt="Status" />
-  <img src="shields.io" alt="Build Status" />
-  <img src="shields.io" alt="React" />
-  <img src="shields.io" alt="FastAPI" />
-  <img src="shields.io" alt="Docker" />
+  <img src="https://img.shields.io/badge/Status-Active_Development-success?style=for-the-badge" alt="Status" />
+  <img src="https://img.shields.io/badge/CI%2FCD-Passing-brightgreen?style=for-the-badge&logo=github-actions" alt="Build Status" />
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
+  <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
 </div>
 
 <br/>
@@ -13,7 +13,7 @@
 > **Developer Activity Analytics & AI Recommendations Platform**  
 > DevTrack is a full-stack gamified platform that goes beyond basic versioning statistics. By natively integrating with the GitHub API, the system collects, analyzes, and evaluates developer activity, calculates a custom **DevScore**, and ranks users on a Global Leaderboard.
 
-🌐 **Live Demo:** [https://devtrack-app-green.vercel.app]  
+🌐 **Live Demo:** [DevTrack App](https://devtrack-app-green.vercel.app) 
 *(Note: The backend is hosted on Render, so the first login might take ~30 seconds to wake up the server!)*
 
 ---
